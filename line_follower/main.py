@@ -22,9 +22,22 @@ robot = DriveBase(leftmotor, rightmotor, diameter, axletrack)
 c = ColorSensor(Port.S3)
 t = TouchSensor(Port.S1)
 
-robot.drive(100, 0)
-while not t.pressed():
-  pass
-robot.stop()
+SPEED = 100 # mm / second
+MIDPOINT = 65
+CORRECTION = -3
+INTERVAL = 0.1 # seconds
 
-brick.sound.beeps(1 + (c.reflection() % 5))
+while not t.pressed():
+  cv = c.reflection()
+  mismatch = cv - MIDPOINT
+  direction = mismatch * CORRECTION
+  if direction > 75:
+    direction = 75
+  if direction < -75:
+    direction = -75
+
+  print("Reflect: ", cv, " -> Direction: ", direction)
+  
+  robot.drive(SPEED, direction)
+
+  time.sleep(0.1)
