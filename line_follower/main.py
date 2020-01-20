@@ -12,13 +12,17 @@ import time
 # Write your program here
 brick.sound.beeps(1)
 
-leftmotor = Motor (Port.B)
-rightmotor = Motor (Port.C)
+leftmotor = Motor(Port.B)
+rightmotor = Motor(Port.C)
 
 diameter = 43 # mm
 axletrack = 145 # mm
-robot = DriveBase (leftmotor, rightmotor, diameter, axletrack)
+robot = DriveBase(leftmotor, rightmotor, diameter, axletrack)
+
+c = ColorSensor(Port.S3)
 
 robot.drive(100, 0)
 time.sleep(2)
 robot.stop()
+
+brick.sound.beeps(1 + (c.reflection() % 5))
