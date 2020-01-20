@@ -23,7 +23,7 @@ c = ColorSensor(Port.S3)
 t = TouchSensor(Port.S1)
 
 SPEED = 150 # deg / second
-MIDPOINT = 50
+MIDPOINT = 55
 CORRECTION = -7
 INTERVAL = 0.05 # seconds
 
@@ -61,3 +61,4 @@ rightmotor.stop()
 
 print("LEFT: ", leftmotor.angle())
 print("RIGHT: ", rightmotor.angle())
+print("BATTERY: ", brick.battery.voltage())
