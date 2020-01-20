@@ -24,28 +24,40 @@ t = TouchSensor(Port.S1)
 
 SPEED = 150 # deg / second
 MIDPOINT = 50
-CORRECTION = -5
+CORRECTION = -7
 INTERVAL = 0.05 # seconds
 
-while not t.pressed():
+leftmotor.reset_angle(0)
+rightmotor.reset_angle(0)
+
+DIST = 2000
+
+while not t.pressed() and (leftmotor.angle() + rightmotor.angle() < DIST):
   cv = c.reflection()
   mismatch = cv - MIDPOINT
   direction = mismatch * CORRECTION
+
   if direction > SPEED:
-    direction = SPEED
-  if direction < -SPEED:
-    direction = -SPEED
+    over = direction - SPEED
+    leftmotor.run(SPEED)
+    rightmotor.run(-over)
+  elif direction > 0:
+    leftmotor.run(SPEED)
+    rightmotor.run(SPEED - direction)
+  elif direction > -SPEED:
+    leftmotor.run(SPEED + direction)
+    rightmotor.run(SPEED)
+  else:
+    over = direction + SPEED
+    leftmotor.run(-SPEED - over)
+    rightmotor.run(SPEED)
 
   print("Reflect: ", cv, ", Mismatch = ", mismatch, " -> Direction: ", direction)
-  
-  if direction < 0:
-    leftmotor.run(SPEED)
-    rightmotor.run(SPEED + direction)
-  else:
-    leftmotor.run(SPEED - direction)
-    rightmotor.run(SPEED)
 
   time.sleep(INTERVAL)
 
 leftmotor.stop()
 rightmotor.stop()
+
+print("LEFT: ", leftmotor.angle())
+print("RIGHT: ", rightmotor.angle())
