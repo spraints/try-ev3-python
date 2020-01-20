@@ -22,10 +22,10 @@ robot = DriveBase(leftmotor, rightmotor, diameter, axletrack)
 c = ColorSensor(Port.S3)
 t = TouchSensor(Port.S1)
 
-SPEED = 100 # mm / second
-MIDPOINT = 65
-CORRECTION = -3
-INTERVAL = 0.1 # seconds
+SPEED = 75 # mm / second
+MIDPOINT = 50
+CORRECTION = -2.5
+INTERVAL = 0.05 # seconds
 
 while not t.pressed():
   cv = c.reflection()
@@ -36,8 +36,8 @@ while not t.pressed():
   if direction < -75:
     direction = -75
 
-  print("Reflect: ", cv, " -> Direction: ", direction)
+  print("Reflect: ", cv, ", Mismatch = ", mismatch, " -> Direction: ", direction)
   
   robot.drive(SPEED, direction)
 
-  time.sleep(0.1)
+  time.sleep(INTERVAL)
