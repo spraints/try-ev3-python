@@ -20,9 +20,11 @@ axletrack = 145 # mm
 robot = DriveBase(leftmotor, rightmotor, diameter, axletrack)
 
 c = ColorSensor(Port.S3)
+t = TouchSensor(Port.S1)
 
 robot.drive(100, 0)
-time.sleep(2)
+while not t.pressed():
+  pass
 robot.stop()
 
 brick.sound.beeps(1 + (c.reflection() % 5))
